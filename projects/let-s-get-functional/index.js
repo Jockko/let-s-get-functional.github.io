@@ -34,7 +34,14 @@ var femaleCount = function(array){
     }).length
 }
 
-var oldestCustomer;
+var oldestCustomer = function(array){
+    return _.reduce(array, function(seed, customer){
+        if(customer.age > seed.age){
+            seed = customer.name;
+        }
+        return seed;
+    })
+}
 
 var youngestCustomer;
 

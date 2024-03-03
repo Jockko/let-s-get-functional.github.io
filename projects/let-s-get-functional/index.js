@@ -43,11 +43,31 @@ var oldestCustomer = function(array){
     })
 }
 
-var youngestCustomer;
+var youngestCustomer = function(array){
+    return _.reduce(array, function(seed, customer){
+        if(customer.age < seed.age){
+            seed = customer.name;
+        }
+        return seed;
+    }, '')
+}
 
-var averageBalance;
+var averageBalance = function(array){
+    return _.reduce(array, function(seed, next){
+        //console.log(customer.balance + next.balance);
+       //return seed + next.balance;
+       return seed.balance + next.balance;
+    }) / array.length;
 
-var firstLetterCount;
+}
+
+var firstLetterCount = function(array, letter){
+    return _.filter(array, function(customer){
+        if(customer.name[0].toUpperCase() === letter.toUpperCase()){
+            return customer;
+        }
+    }).length;
+}
 
 var friendFirstLetterCount;
 

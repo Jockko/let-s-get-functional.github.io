@@ -37,28 +37,36 @@ var femaleCount = function(array){
 var oldestCustomer = function(array){
     return _.reduce(array, function(seed, customer){
         if(customer.age > seed.age){
-            seed = customer.name;
+            seed = customer;
         }
         return seed;
-    })
+    }).name
 }
 
 var youngestCustomer = function(array){
     return _.reduce(array, function(seed, customer){
         if(customer.age < seed.age){
-            seed = customer.name;
+            seed = customer;
         }
         return seed;
-    }, '')
+    }).name
 }
 
 var averageBalance = function(array){
-    return _.reduce(array, function(seed, next){
-        //console.log(customer.balance + next.balance);
-       //return seed + next.balance;
-       return seed.balance + next.balance;
-    }) / array.length;
-
+    //retrieve all balances
+    let balances =  _.map(array, function(ele){
+        let balance = ele.balance.replace(/[$,]/g, "");
+        //console.log(balance);
+        let balanced = Number(balance);
+        console.log(balanced);
+        return balanced;
+    });
+    //console.log(balances.length);
+    //find the average of those balances
+    return _.reduce(balances, function(seed, next){
+        seed = seed + next;
+        return seed;
+    }, 0)/balances.length;
 }
 
 var firstLetterCount = function(array, letter){
@@ -69,13 +77,104 @@ var firstLetterCount = function(array, letter){
     }).length;
 }
 
-var friendFirstLetterCount;
+var friendFirstLetterCount = function(array, customer, letter){
+    //find the amount of friends that customer has that begins with letter
+    //loop through the array
+    for(let i = 0; i < array.length; i++){
+        //check each customer and find the customer that we're looking for
+        if(array[i].name === customer){
+        //check that customer object's friends
+        return array[i].friends.reduce((acc, current)=>{
+            if(current.name[0].toUpperCase() === letter.toUpperCase()){
+                acc++
+            }
+            return acc;
+        }, 0)
+        //how many friends name begins with first letter
 
-var friendsCount;
+        }
 
-var topThreeTags;
+    }
+    //see if that customer friends have a name that start with letter
 
-var genderCount;
+}
+
+var friendsCount = function(array, name){
+//loop through the array
+return array.reduce((acc, customer)=>{
+for(let i = 0; i < customer.friends.length; i++){
+    if(customer.friends[i].name === name){
+        acc.push(customer.name);
+    }
+}
+return acc;
+}, [])
+}
+//if so, add that customer's name to the list of other customer name's that matched
+
+var topThreeTags = function(array){
+//iterate through each customer
+//iterate through each customer tags
+//create an object that breaks down every tag
+let a = array.reduce((acc, current)=>{
+//every key is a tag and the value is the amount of times it appears
+for(let i = 0; i < current.tags.length; i++){
+    //if it does exist on accumulator already
+    if(acc[current.tags[i]]){
+        acc[current.tags[i]] += 1;
+    }
+    else {
+        acc[current.tags[i]] = 1;
+    }
+}
+return acc;
+}, {});
+//console.log(a)
+let output = [];
+//console.log(output)
+for(let key in a){
+let subArr = [];
+//tag
+subArr[0] = key;
+subArr[1] = a[key];
+output.push(subArr);
+}
+//console.log("FIRST", output.length)
+// let final = [];
+// for(let i = 0; i < output.length; i++){
+//     if(output[i][1] >= output[i + 1][1]){
+//         final.unshift(output[i][0]);
+//     }
+//     final.push(output[i][0]);
+//     console.log("FINALLL", final)
+// }
+// return final;
+return output.sort((a, b)=>{
+    // if(b[1] > a[1]){
+    //     return b[0]
+    // }
+    // else if(a[1] > b[1]){
+    //     return a[0];
+    // }
+    // console.log("QQ", a, b)
+    // console.log("BANG BANG", b[1] - a[1])
+     return b[1] - a[1];
+})
+
+}
+
+var genderCount = function(array){
+    return array.reduce((acc, current)=>{
+        //if it exists
+        if(acc[current.gender]){
+            acc[current.gender] += 1;
+        }
+        else {
+            acc[current.gender] = 1;
+        }
+    return acc;
+    }, {})
+}
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
